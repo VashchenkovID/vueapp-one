@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <router-link class="nav__link" to="/">Главная</router-link>
     <h1>Страница с постами</h1>
     <my-input
       class="input"
@@ -19,6 +20,7 @@
       <div class="container__column">
         <post-list
           :posts="sortedAndSearchedPosts"
+          button-state-add
           @remove="removePost"
           v-if="!isPostsLoading"
         />
@@ -26,8 +28,9 @@
         <div ref="observer" class="observer"></div>
       </div>
       <div class="container__column">
-        <post-list-two
-          :postsTwo="sortedAndSearchedPostsTwo"
+        <post-list
+          :posts="sortedAndSearchedPostsTwo"
+          :button-state-add="false"
           @remove="removePostTwo"
           v-if="!isPostsLoading"
         />
@@ -44,27 +47,26 @@ import PostList from "@/Components/PostList.vue";
 import axios from "axios";
 import MyButton from "@/Components/UI/MyButton.vue";
 import MySelect from "@/Components/UI/MySelect.vue";
-import PostListTwo from "@/Components/PostListTwo.vue";
 
 export default {
   components: {
     PostList,
-    PostListTwo,
     PostForm,
     MyButton,
     MySelect,
+    
   },
   data() {
     return {
       posts: [],
       postsTwo: [],
+      history: [],
       dialogVisible: false,
       isPostsLoading: false,
       selectedSort: "",
       searchQuery: "",
       limit: 10,
       totalPages: 0,
-      page: 0,
       sortOptions: [
         { value: "title", name: "По названию" },
         { value: "body", name: "По содержанию" },
@@ -79,12 +81,15 @@ export default {
     removePost(post) {
       this.posts = this.posts.filter((p) => p.id !== post.id);
       this.postsTwo.push(post);
+      this.history.push({ state: "saved", post: post, date: Date.now() });
+      sessionStorage.setItem("history", JSON.stringify(this.history));
     },
     removePostTwo(post) {
       this.postsTwo = this.postsTwo.filter((p) => p.id !== post.id);
       this.posts.unshift(post);
+      this.history.push({ state: "deleted", post: post, date: Date.now() });
+      sessionStorage.setItem("history", JSON.stringify(this.history));
     },
-
     showDialog() {
       this.dialogVisible = true;
       this.isPostsLoading = false;
@@ -152,6 +157,10 @@ export default {
     };
     let observer = new IntersectionObserver(callback, options);
     observer.observe(this.$refs.observer);
+    const history = sessionStorage.getItem("history");
+    if (history) {
+      this.history = JSON.parse(history);
+    }
   },
   computed: {
     sortedPosts() {
@@ -184,23 +193,99 @@ export default {
 </script>
 
 <style>
-.page__wrapper {
-  display: flex;
-  margin-top: 15px;
+.input{
+   border-radius: 10px;
+   padding: 10px;
+   border: 2px solid #000;
 }
-.page {
-  border: 1px solid black;
-  padding: 10px;
-  margin: 8px;
+h1{
+  padding-top: 40px;
+   font-family: Inter;
+font-style: normal;
+font-weight: bold;
+font-size: 42px;
+line-height: 39px;
+/* identical to box height */
+color: rgb(245, 241, 11);
+text-align: center;
 }
-.current-page {
-  border: 5px solid teal;
+strong{
+  color: rgb(245, 241, 11);
+}
+
+body {
+  background: #141212;
+  font-family: Inter;
+font-style: normal;
+font-weight: bold;
+color: #fff;
 }
 .container__wrapper {
   display: flex;
   flex-direction: row;
+  margin: 0;
 }
 .container__column {
   width: 50%;
+  margin: 0;
 }
+a {
+  text-decoration: none;
+}
+.nav__link {
+  padding: 15px;
+  background-color: #474747;
+  text-align: center;
+}
+.nav__link {
+  width: 230px;
+  height: 40px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: "Lato", sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+    7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+.nav__link {
+  border: none;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+.nav__link:after {
+  position: absolute;
+  content: " ";
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #1fd1f9;
+  background-image: linear-gradient(315deg, #1fd1f9 0%, #b621fe 74%);
+  transition: all 0.3s ease;
+}
+.nav__link:hover {
+  background: transparent;
+  box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.5),
+    -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+    inset -4px -4px 6px 0 rgba(255, 255, 255, 0.5),
+    inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+  color: #fff;
+}
+.nav__link:hover:after {
+  -webkit-transform: scale(2) rotate(180deg);
+  transform: scale(2) rotate(180deg);
+  box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.5),
+    -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+    inset -4px -4px 6px 0 rgba(255, 255, 255, 0.5),
+    inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+}
+
 </style>

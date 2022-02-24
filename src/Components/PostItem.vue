@@ -5,30 +5,34 @@
       <div><strong>Описание:</strong>{{ post.body }}</div>
     </div>
     <div class="post__btns" @click="$emit('remove', post)">
-      <my-button >
-        <slot>{{btnReverce}}</slot>
+      <my-button>
+        {{ stateButton ? '+' : '-' }}
       </my-button>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
-  data() {
-    return {
-      btnReverce: '+',
-    };
-  },
   props: {
     post: {
       type: Object,
       required: true,
     },
+    stateButton: {
+      type: Boolean,
+      required: true,
+    }
   },
-  
+  methods: {
+    ClickActive() {
+      this.change = '-';
+      console.log(this.change);
+    },
+  },
 };
 </script>
+
 
 
 <style scoped>
@@ -37,8 +41,12 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 15px;
-  border: 2px solid teal;
+  border: 2px solid #000;
   margin-top: 15px;
+}
+strong{
+  margin: 0;
+  padding: 0;
 }
 
 </style>

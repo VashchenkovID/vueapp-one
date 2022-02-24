@@ -17,4 +17,9 @@ export default {
 </script>
 
 <style scoped>
+.input{
+  background-color: #fff;
+  border: none;
+  margin-left: 0 ;
+}
 </style>

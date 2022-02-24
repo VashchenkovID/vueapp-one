@@ -1,11 +1,12 @@
 <template>
   <div class="post-list" v-if="posts.length > 0">
-    <h3>Список пользователей</h3>
+    <h3>Список Заметок</h3>
     <transition-group name="user-list">
       <post-item
         v-for="post in posts"
         :key="post.id"
         :post="post"
+        :state-button="buttonStateAdd"
         @remove="$emit('remove', post)"
       />
     </transition-group>
@@ -22,6 +23,10 @@ export default {
       type: Array,
       required: true,
     },
+    buttonStateAdd: {
+      type: Boolean,
+      required: true,
+    }
   },
 };
 </script>
@@ -42,5 +47,15 @@ export default {
 }
 .user-list-move {
   transition: transform 0.5s ease;
+}
+h2{
+  color: rgb(245, 241, 11);
+}
+h3{
+  color: rgb(245, 241, 11);
+}
+.post-list{
+  margin-left:0 ;
+
 }
 </style>

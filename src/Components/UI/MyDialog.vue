@@ -32,11 +32,13 @@ export default {
   left: 0;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
+  z-index: 10;
 }
 .dialog__content{
     margin: auto;
-    background: white;
+    background: #474747;
     border-radius: 14px;
+    border: 1px solid #ccaa12;
     min-height: 50px;
     padding: 20px;
 }
