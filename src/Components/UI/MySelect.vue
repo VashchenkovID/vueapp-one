@@ -1,10 +1,7 @@
 <template>
   <select class="select" :v-model="modelValue" @change="changeOption">
     <option disabled value="">Выберите из списка</option>
-    <option 
-      v-for="option in options" 
-      :key="option.value" 
-      :value="option.value">
+    <option v-for="option in options" :key="option.value" :value="option.value">
       {{ option.name }}
     </option>
   </select>
@@ -31,24 +28,19 @@ export default {
 </script>
 
 <style scoped>
-option{
+option {
   background: rgba(0, 0, 0, 0.7);
   padding: 5px;
   text-align: center;
 }
-.select{
-  border-radius:5px;
-
+.select {
+  border-radius: 5px;
 }
 .select {
- 
   background-color: #474747;
-  
-
 }
 .select {
- 
- margin-left:0 ;
+  margin-left: 0;
   color: #fff;
   border-radius: 5px;
   padding: 10px 25px;
