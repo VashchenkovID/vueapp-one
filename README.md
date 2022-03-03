@@ -22,11 +22,8 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
-### Technical Task
-Фреймворк Vue.js состоит из трех основных библиотек (
-  [Vue](https://vuejs.org/),
-  [VueRouter](https://router.vuejs.org/)
-).
+
+
 ## Задача:
 Реализовать web приложение с использованием фреймворка Vue.js, которое совершает
 запрос 100 элементов со следующей структурой из любого открытого api
